@@ -1,0 +1,24 @@
+%%% 各行のベースラインの位置に罫線を表示するページスタイル
+\let\ps@Empty\ps@empty
+\def\ps@baselines{%
+   \def\@oddhead{\@show@baselines\hfil}%
+   \let\@evenhead\@oddhead
+   \def\@oddfoot{\hfil--~\thepage~--\hfil}%
+   \let\@evenfoot\@oddfoot
+   \let\@mkboth\@gobbletwo}
+\def\@show@baselines{%
+   \vbox to\z@{%
+      \vskip\headsep
+      \vbox{\normalsize
+         \vskip\topskip
+         \hrule \@height .25\p@ \vskip-.25\p@
+         \dimen@\textheight \advance\dimen@-\topskip
+         \vbox to\dimen@{%
+            \leaders
+               \vbox to\baselineskip{%
+                  \vfil
+                  \hrule \@height .25\p@ \@width\textwidth}%
+               \vfil}}%
+      \vss}}
+\AtBeginDocument{\let\ps@empty\ps@baselines
+\pagestyle{baselines}}

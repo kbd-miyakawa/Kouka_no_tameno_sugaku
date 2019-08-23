@@ -1,0 +1,269 @@
+\RequirePackage{amsthm}
+
+%% 暫定のtheorem類
+\newtheoremstyle{tmpstyle}
+{.5\baselineskip}{.5\baselineskip}
+{\normalfont}{0pt}{\sffamily}%
+{}{1zw}{}
+
+\theoremstyle{tmpstyle}
+\newtheorem{定義}{定義}
+\newtheorem{定理}{定理}
+\newtheorem{補題}{補題}
+\newtheorem{系}{系}
+\newtheorem{命題}{命題}
+\newtheorem{注意}{注意}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 回り込み
+\let\Mw\mawarikomi
+\let\endMw\endmawarikomi
+
+\RequirePackage{tcolorbox}
+\tcbuselibrary{raster,skins,breakable,xparse}
+
+%% 章
+\DeclareRobustCommand*\KBchapternumfont{\reset@font\fontsize{16Q}{16H}\bfs}
+\DeclareRobustCommand*\KBchapterfont{\reset@font\fontsize{24Q}{36H}\bfs}
+\def\@makechapterhead#1{{\parindent\z@%
+\toplinebox{8}{%
+\begin{tabular}{@{}|p{\textwidth}@{}}
+\HLINE{.5mm}%
+\multicolumn{1}{@{\hskip.5mm}l}{\KBchapternumfont
+   \ifnum \c@secnumdepth >\m@ne
+   \rule[-.35zh]{0pt}{1.5zh}%
+    \if@mainmatter
+      \@chapapp\thechapter\@chappos
+     \else
+      \hbox{}
+    \fi}
+    \\\hline
+\KBchapterfont\hskip-.5\tabcolsep
+\hskip2mm%
+\parbox[t][35mm]{\textwidth}{\rule{0pt}{1.35zh}%
+\@inhibitglue#1}
+\\
+\end{tabular}\par\vfill\fi}}%
+}
+\let\@make@appendix@chapterhead\@makechapterhead
+
+
+%% 節
+\DeclareRobustCommand*\KBsectionfont{\reset@font\fontsize{14Q}{21H}\bfs}
+\DeclareRobustCommand*\KBsectionnumfont{\reset@font\fontsize{14Q}{21H}\bfs}
+\DeclareRobustCommand*\KBsubsectionfont{\reset@font\normalsize\sffamily}
+\DeclareRobustCommand*\KBsubsectionnumfont{\reset@font\normalsize\sffamily}
+\DeclareRobustCommand*\KBsubsubsectionfont{\reset@font\normalsize\bfs}
+\DeclareRobustCommand*\KBsubsubsectionnumfont{\reset@font\normalsize\bfs}
+
+%% 節
+\KBheadinggap{section}{3}
+\KBheadinggap[2mm]{subsection}{2}
+\KBheadinggap[2mm]{subsubsection}{2}
+\def\@make@section@head#1#2#3{%
+\bgroup
+       \noindent#2\hskip#1\relax
+       \setbox\z@\hbox{\@svsec}%
+       \@tempdima\linewidth\advance\@tempdima-\wd\z@
+       \advance\@tempdima-#1\relax
+       \setbox\tw@\hbox{#3}%
+       \hrule height0.15mm\par\nobreak\vskip1mm\noindent
+       \dp\z@\z@\copy\z@%
+          \ifdim\wd\tw@>\@tempdima
+               \vtop{\hsize=\@tempdima\@parboxrestore\unhbox\tw@\@@par}
+          \else
+               \@inhibitglue\unhbox\tw@
+          \fi\par\nobreak\vskip1.5mm
+       \hrule height0.15mm
+       \advance\@tempdima\wd\z@
+\egroup
+}
+
+%% 項
+\setcounter{secnumdepth}{3}
+\renewcommand{\thesubsubsection}{%
+   \@arabic\c@subsubsection}
+\PreSecCntName{subsubsection}{(}
+\PostSecCntName{subsubsection}{)}
+
+%% 証明
+\let\証明\relax
+\let\end証明\relax
+\newcommand{\QED}{■}
+\newenvironment{証明}[1][\relax]{%
+\if#1\relax\def\kbOption{}\else\def\kbOption{\hbox{\null（#1）}}\fi
+\list{\hbox{\bfseries 【証明】}\kbOption}{\topsep\baselineskip
+\leftmargin0pt\labelwidth=\leftmargin
+\labelsep1zw\advance \labelwidth by -\labelsep
+\listparindent1zw}\item}
+{\hspace*{\fill}\QED
+\endlist}
+%%証明\QEDなし
+\newenvironment{証明*}{%
+\list{\hbox{\bfseries 【証明】}}{\topsep\baselineskip
+\leftmargin0pt\labelwidth=\leftmargin
+\labelsep1zw\advance \labelwidth by -\labelsep
+\listparindent1zw}\item}
+{\endlist}
+
+
+
+\newenvironment{abstract}{\par}{\par}
+
+%% コラム中身
+\newcommand{\Colhead}{\hbox{\bfseries \scalebox{1.5}{C}olumn}}
+\newtcolorbox{Column}{enhanced,breakable,%empty, 
+borderline={.25mm}{.25mm}{black},
+arc=0pt,
+title=\Colhead,
+attach boxed title to top left= {xshift=-3mm, yshift=-1mm},
+boxed title style={empty},
+left=.25zw,right=.25zw,top=.25zw,bottom=.25zw,middle=.25zw,
+colback=black!10,%：box 本体の背景色の変更
+colframe=white,%：box のフレームの色の変更
+colbacktitle=white,%：タイトルの背景色の変更
+coltitle=black,%：タイトル文字色の変更
+%coltext=black,%：本文の文字色の変更
+}
+
+
+%% コラムUI
+\NewDocumentEnvironment{コラム}{ o }
+{\clearpage
+\begin{Column}\footnotesize% 小さい文字組用に一度\footnotesizeの設定をloadしておく
+\let\footnotesize\scriptsize% 脚注サイズを小さく
+\fontsize{10.5Q}{20H}\selectfont % コラム用の文字サイズ
+\parindent1zw
+\IfValueT{#1}{\noindent\textbf{#1}\par}{}}{\end{Column}}
+
+%% 例
+\newcounter{例}[chapter]
+\renewcommand{\the例}{\thechapter.\arabic{例}}
+
+% 「例」アイコン装飾のbase
+\newtcbox{\Blidbox}{on line,arc=5.5pt,
+         sharp corners,rounded corners=west,
+         colback=black!50!white,colframe=black!50!white,
+%        before upper={\rule[-1.5pt]{0pt}{10pt}},
+         boxrule=0pt,boxsep=0pt,left=5pt,right=1pt,top=.5pt,bottom=.5pt
+}
+% 「例」アイコンUI
+\newcommand{\reihead}{\Blidbox{\textbf{\textcolor{white}{例}}}}
+% 例の罫線
+\newcommand{\Hrulefill}{\leavevmode\leaders\hrule depth-.3zh height.4zh \hfill\kern\z@}
+
+%% \begin{例}*[TITLE] % `*' = カウンタなし， [TITLE]=タイトル
+\NewDocumentEnvironment{例}{ s o }{%
+     \refstepcounter{例}%
+     \trivlist\item[]%
+     \mbox{\reihead
+     \IfBooleanF{#1}{\hskip.25zw\textsf{\the例}}%
+     \hskip1zw
+     \IfValueT{#2}{\textsf{#2}}%
+     \hskip.2zw}\Hrulefill\par\nobreak
+}
+{\parindent0pt\par\nointerlineskip
+               \nobreak\vskip2.5mm\Hrulefill
+               \endtrivlist
+}
+
+
+
+
+%% 章末問題
+%% 問題NUM の自動発生は止めた．
+%% HEAD
+\newcommand{\ttmChapter}[1]{\makebox[\linewidth][c]{%
+\colorbox{black!50}{\textcolor{white}{\hskip.5zw\textbf{#1}\hskip.5zw}}}}
+\newcommand{\ChapterProbName}{章末問題}
+
+\newcommand{\Syoumatulabel}[1]{\hspace\labelsep\normalfont\sffamily#1}
+%%\newcounter{章末問題}[chapter]\def\the章末問題{\arabic{章末問題}}
+\newenvironment{章末問題}{%
+\if@openright \cleardoublepage \else \clearpage \fi
+\markright{\ChapterProbName}\addcontentsline{toc}{section}{\ChapterProbName}%
+%%\refstepcounter{章末問題}%
+%% enumerate再定義
+\setlist[enumerate,1]{leftmargin=1.25zw,label=\arabic*)}%
+\noindent
+\ttmChapter{\ChapterProbName}
+%%
+%
+\list{}{\topsep.5\baselineskip
+\leftmargin=2zw\labelwidth0pt\itemindent-\leftmargin
+%\usecounter{章末問題}
+\let\makelabel\Syoumatulabel}}{\endlist}
+
+
+
+%% 章末問題解答タイトル
+\newtcolorbox{Shadebox}{%
+width=\textwidth,
+left skip=0pt,
+colback=black!10,%
+colframe=white,%
+arc=0pt,%
+before skip=.5\baselineskip,%
+after skip=.25\baselineskip,%
+left=.25zw,right=.25zw,top=0pt,bottom=0pt,middle=.15zw
+%height=8mm,
+valign=center
+}
+%% 網掛けUI
+\newcommand{\shadeheadline}[1]{%
+\begin{Shadebox}\textbf{#1}\end{Shadebox}
+}
+
+
+
+%% 章末問題解答
+%% Head
+\def\tmChapter#1{%
+{\parindent\z@
+     \toplinebox{3}{\vskip\normalbaselineskip
+     \centering
+     \reset@font\fontsize{11pt}{11pt}\bfseries
+     #1
+     \par\vfill}%
+   }}
+% タイトル
+\newcommand{\Answertitle}{章末問題\hskip1zw解答}
+
+\newcommand{\Kaitoulabel}[1]{\hspace\labelsep\normalfont\sffamily#1}
+%%\newcounter{章末問題解答}[chapter]\def\the章末問題解答{\arabic{章末問題解答}}
+\newenvironment{章末問題解答}{%
+\if@openright \cleardoublepage \else \clearpage \fi
+\thispagestyle{empty}%
+\markright{\Answertitle}\addcontentsline{toc}{section}{\Answertitle}%
+%%\refstepcounter{章末問題解答}%
+\setlist[enumerate,1]{leftmargin=1.25zw,label=\arabic*)}%
+%\shadeheadline{章末問題\hskip1zw解答}%
+\tmChapter{\Answertitle}
+\list{%\the章末問題解答
+}{\topsep0pt
+\leftmargin=2zw\labelwidth0pt\itemindent-\leftmargin
+%\usecounter{章末問題解答}
+\let\makelabel\Kaitoulabel}}{\endlist}
+
+%%
+\long\def\shadebox#1{%
+   \par\parshape\z@
+   \item[]\noindent
+%   \parindent1zw\relax
+   \shadeheadline{#1}\@@par\nobreak
+   \parshape \@ne \@totalleftmargin \linewidth
+   \parindent\listparindent}%
+%% \RequirePackage{verbout}
+
+
+\def\indexHead#1{%
+\if 数#1\relax
+\addvspace{\baselineskip}%
+\item {\underline{\makebox[\linewidth][c]{\bfseries 英数字}}\nopagebreak}%
+\else
+	\ifcat あ#1
+	\addvspace{\baselineskip}%
+	\item {\underline{\makebox[\linewidth][c]{\bfseries #1行}}\nopagebreak}%
+	\fi
+\fi%
+}

@@ -1,0 +1,9 @@
+$ENV{'TZ'}='Asia/Tokyo';# Time Zoneを日本へ
+$ENV{'TEXINPUTS'}='./local-texmf//;';
+$latex         = 'uplatex';
+$latex_silent  = 'uplatex';
+$bibtex        = 'upbibtex %O %B';
+$dvipdf        = 'dvipdfmx %O -o %D %S';
+$makeindex     = 'upmendex -g -s index.ist %O -o %D %S';
+$pdf_mode      = 3; 
+$pdf_update_command = "pdflatex 'main.pdf'";

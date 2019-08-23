@@ -1,0 +1,43 @@
+preamble  "\\begin{theindex}\n"
+postamble  "\n\n\\end{theindex}\n"
+group_skip	"\n\n  \\indexspace\n"
+
+%	頭文字の前に付けるコマンド文字列。
+lethead_prefix  "\n\\indexHead {"
+
+%	頭文字の後に付けるコマンド文字列。
+lethead_suffix  "}"
+
+%	頭文字の出力のフラグ。0のとき出力しない。0より大きいときは英字を大文字で、
+%	0より小さいときは小文字で出力する。
+lethead_flag  1
+
+delim_0  ", "
+delim_1  ", "
+delim_2  ", "
+
+%	symbol の出力フラグ。0のとき出力しない。(mendex専用)
+symbol_flag	1
+
+%	lethead_flag または heading_flag が正数の場合に数字・記号の頭文字として
+%	出力する文字列。
+symhead_positive  "数"
+
+%%symbols	"数字"
+
+%	日本語の頭文字の出力のフラグ。0のとき出力しない。1のときカタカナ、2のとき
+%	ひらがなで出力する。(mendex専用)
+%letter_head	1% カタカナ
+letter_head	2% ひらがな
+
+%character_order	"SNEJ"
+%	"SEJ"
+%	記号、英字、日本語の優先順位。'S'は記号、'E'は英字、'J'は日本語を表す。
+%	(mendex専用) 
+%%% マニュアルに記述はないが，Nは数字らしい
+
+
+%	英字と日本語との混在した索引語のソート方法についてのフラグ。0でなければ
+%	英字と日本語との間に半角スペースを入れた状態でソートする。(mendex専用)
+%priority	0% "index sort" -> "indファイル"
+%priority	1% "indファイル" -> "index sort" つまりsortを"ind[SP]ファイル"として扱う

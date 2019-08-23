@@ -1,0 +1,106 @@
+\RequirePackage{calculator}
+\RequirePackage{lineno}
+\@ifundefined{ps@Empty}{\let\ps@Empty\ps@empty}{}
+\newif\if@chack@otf
+\@ifpackageloaded{otf}{\@chack@otftrue}{}
+\newif\if@chack@uptex
+\@ifundefined{kchar}{}{\@chack@uptextrue}
+\linenumbers
+\pagewiselinenumbers
+\newcount\KeBAI
+\newcount\xx@cnta
+\newcommand{\WH}[2][□]{\markboth{□□□□}{□□□□}%
+\@tempcnta=#2\relax\@tempcntb=\z@
+\loop\ifnum\@tempcnta>0
+     \ifnum\eBAI=\@tempcntb\@tempcntb0\fi
+     \advance\@tempcntb1
+     \xx@cnta\@tempcntb
+     \divide\xx@cnta5\multiply\xx@cnta5
+     \ifnum\@tempcntb=\xx@cnta ◆\else#1\fi
+\advance \@tempcnta-1\repeat
+}
+
+\newdimen\Evensidemargin\newdimen\Topmargin
+\def\LENGTHptMULTIPLY#1#2#3{%
+       \begingroup
+       \cctr@lengtha=#1
+       \edef\cctr@tempa{\expandafter\strip@pt\cctr@lengtha}%
+       \MULTIPLY{\cctr@tempa}{#2}{#3}
+       \@OUTPUTSOL{#3}}
+\def\DIMENtoQ#1#2#3#4#5#6{\setlength{\dimen0}{#2}%
+    \edef\tmpPT{\strip@pt\dimen0}%
+    \ADD{\tmpPT}{0}{#3}%	
+    \LENGTHptMULTIPLY{#2}{0.3514}{#4}%
+    \MULTIPLY{#4}{4}{#5}%
+    \ROUND[2]{#5}{#6}%
+}
+\def\DIMENtoMM#1#2#3#4{%
+\LENGTHptMULTIPLY{#2}{0.3514}{#3}%
+    \ROUND[1]{#3}{#4}%
+}
+\def\set@parameter@KB{%
+\setlength{\Evensidemargin}{\evensidemargin}%
+\addtolength{\Evensidemargin}{1in}%
+\setlength{\Topmargin}{\topmargin}%
+\addtolength{\Topmargin}{\headsep}%
+\addtolength{\Topmargin}{\headheight}%
+\addtolength{\Topmargin}{1in}%
+\edef\TOPSKIP{\strip@pt\topskip}%
+\DIMENtoMM{判型左右}{\paperwidth}{\PWsizeMM}{\PWsizeMMR}
+\DIMENtoMM{判型天地}{\paperheight}{\PTsizeMM}{\PTsizeMMR}
+\DIMENtoMM{headsep}{\headsep}{\HSsizeMM}{\HSsizeMMR}
+\DIMENtoMM{天}{\Topmargin}{\TMsizeMM}{\TMsizeMMR}
+\DIMENtoMM{小口}{\Evensidemargin}{\EVsizeMM}{\EVsizeMMR}
+\DIMENtoQ{文字サイズ}{\f@size\p@}{\FsizePT}{\FsizeMM}{\FsizeQ}{\FsizeQR}
+\DIMENtoQ{行送}{\baselineskip}{\BsizePT}{\BsizeMM}{\BsizeQ}{\BsizeQR}
+\DIMENtoQ{天地}{\textheight}{\THsizePT}{\THsizeMM}{\THsizeQ}{\THsizeQR}
+    \ADD{\THsizePT}{-\TOPSKIP}{\tmpHTa}
+    \DIVIDE{\tmpHTa}{\BsizePT}{\tmpHTb}
+    \ADD{\tmpHTb}{1}{\tmpHTc}
+    \ROUND[2]{\tmpHTc}{\LINE}
+    \ROUND[0]{\tmpHTc}{\Line}
+\DIMENtoQ{左右}{\textwidth}{\WTsizePT}{\WTsizeMM}{\WTsizeQ}{\WTsizeQR}
+\DIVIDE{\WTsizeQ}{\FsizeQ}{\bai}\ROUND[2]{\bai}{\BAI}\ROUND[0]{\bai}{\eBAI}}
+\newcommand{\kb@scalefont}[1][-1Q]{\dimen0=\f@size\p@%
+\dimen3=\baselineskip\advance\dimen3 by#1\relax
+\advance\dimen0 by#1\relax\fontsize{\dimen0}{\dimen3}\selectfont}
+
+\def\PTT{\show\f@size}
+\def\TEXTparameter{%
+\nolinenumbers\thispagestyle{Empty}%
+\set@parameter@KB
+\MULTIPLY{\Line}{\eBAI}{\TOTAL}
+\MULTIPLY{\TOTAL}{2}{\LRTOTAL}
+\begin{center}
+\begin{tabular}{lrl}
+\multicolumn{3}{c}{%
+仕様}\\
+判型天地 & \texttt{\PTsizeMMR\,mm}\\
+判型左右 & \texttt{\PWsizeMMR\,mm} \\
+版面天地 & \texttt{\THsizeQR\,Q}\quad \ROUND[2]{\THsizeMM}{\THsizeMMR}\texttt{\THsizeMMR\,mm} &（$\approx\LINE$行）\\
+版面左右 & \texttt{\WTsizeQR\,Q}\quad \ROUND[2]{\WTsizeMM}{\WTsizeMMR}\texttt{\WTsizeMMR\,mm} &（$\approx\BAI$倍）\\
+天  &\texttt{\TMsizeMMR\,mm}\\
+小口  &\texttt{\EVsizeMMR\,mm}\\
+\texttt{headsep} & \texttt{\HSsizeMMR\,mm}\\
+\end{tabular}\\
+\begin{tabular}{lrl}
+\hline
+\multicolumn{3}{l}{%
+和文フォント \fontsize{10pt}{0pt}\texttt{\fontname\jfont}\@ifundefined{@jqscale}{}{ \ \texttt{(jfmscale=\@jqscale)}}{}}\\
+文字サイズ & \texttt{\FsizeQR\,Q}&\texttt{(\FsizePT\,pt)}\\
+行送り & \texttt{\BsizeQR\,Q}&\texttt{(\BsizePT\,pt)}\\\hline
+\multicolumn{3}{r}{\kb@scalefont[-2Q]%
+$1\mathrm{pt}=0.3514\,\mathrm{mm}$\quad$1\mathrm{Q}=0.25\,\mathrm{mm}$%
+}\\
+\multicolumn{3}{r}{otf package: \if@chack@otf yes\else no\fi}\\
+\multicolumn{3}{r}{\TeX\ engin: \if@chack@uptex uplatex \else platex\fi}
+\end{tabular}
+\end{center}
+\newpage\linenumbers
+\WH{\LRTOTAL}%
+}
+\parindent0pt
+
+\AtBeginDocument{\TEXTparameter
+\end{document}
+}

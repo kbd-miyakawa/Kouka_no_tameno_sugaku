@@ -1,0 +1,78 @@
+\documentclass[%keepfline,
+booktitle=工科のための数学,
+a5/13Q,
+uplatex,
+dvipdfmx,
+jis2004,%%or jis2000
+useotf,
+]{kbdbook}
+\usepackage[OT1,T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{lmodern}
+\usepackage[deluxe]{otf}
+% 設定確認用
+%\usepackage{KBtexrpara}%% 組版パラメータ
+%\usepackage{baselinehead}%% baselineの表示
+
+%% 和文の割り当て
+\usepackage[ipaex,
+%   baseMincho = A-OTF-RyuminPr6-Regular.otf,
+%   baseGothic = A-OTF-GothicBBBPr6-Medium.otf,
+%   mcl =,
+%   mcb =,
+%   gtb =,
+%   eb = ,
+%   mg* = ,
+%   mgscale=.5
+]{KBDaddjfont}
+\usepackage{amsmath}
+\usepackage{makeidx}
+\usepackage{bm}
+\usepackage{graphicx,xcolor}
+\usepackage{nccmath}%% 数式で\begin{fleqn}[0pt]など
+\usepackage{enumitem}%% 箇条書きのカスタマイズ
+\usepackage{emathMw}% 回り込み
+\usepackage{macros}
+\makeindex
+
+\graphicspath{{./fig/}}
+
+%% 章ごとにファイル分割（必要に応じて加減）
+\includeonly{
+	Chap01,
+	Chap02,
+	Chap03,
+	Chap05,
+	Chap06,
+	}
+
+\begin{document}
+\frontmatter
+   \tableofcontents
+\mainmatter
+%% 見本ファイル．不要になったら削除してください．
+\input{Chap-sample.tex}
+%% 章ごとにファイルに分割したファイルの読み込み
+%% 6章程度？（必要に応じて加減）
+   \include{Chap01}
+   \include{Chap02}
+   \include{Chap03}
+   \include{Chap04}
+   \include{Chap05}
+   \include{Chap06}
+\begin{章末問題解答}
+%% 各章ごとの解答をAns(章番号).texとして記述してください．
+\makeatletter
+   \@input{Ans01}
+   \@input{Ans02}
+   \@input{Ans03}
+   \@input{Ans04}
+   \@input{Ans05}
+   \@input{Ans06}
+\makeatletter
+\end{章末問題解答}
+\printindex
+\end{document}
+
+
+

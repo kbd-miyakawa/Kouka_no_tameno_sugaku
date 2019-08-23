@@ -1,0 +1,27 @@
+\RequirePackage{moreverb}
+    \newwrite\KBverb@out
+    \AtEndDocument{
+    \closeout\KBverb@out
+    }
+    \immediate\openout\KBverb@out=\jobname.Answer
+    \def\AnswerOutput{%
+      \@bsphack
+      \let\do\@makeother\dospecials
+      \catcode`\^^M\active \catcode`\^^I=12
+      \immediate\write\KBverb@out
+          {\thechapter}
+      \def\verbatim@processline{%
+        \immediate\write\KBverb@out
+          {\string\shadebox{第1章}^^J
+          \string\item[問題]}}%
+      \verbatim@start}
+    \def\endAnswerOutput{%
+         \@esphack
+         \immediate\write\KBverb@out
+         {\thechapter ---%
+         }}
+
+
+\def\printAnser{\immediate\closeout\KBverb@out
+\section{例題の答}
+\@input{\jobname.Answer}}
